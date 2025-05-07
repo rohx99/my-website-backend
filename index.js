@@ -24,6 +24,7 @@ app.use(
     },
   })
 );
+app.set("trust proxy", true);
 
 app.get("/", (req, res) => {
   return res.send("Console Backend is running");

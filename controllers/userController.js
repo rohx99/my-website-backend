@@ -104,19 +104,20 @@ const updateUser = async (req, res) => {
     }
 
     if (req.file) {
-      const updatedProfilePhoto = req.file.path;
-      previousData.profilePhoto = user.profilePhoto;
+      const updatedProfilePicture = req.file.path;
+      previousData.profilePicture = user.profilePicture;
 
-      if (user.profilePhoto) {
-        const oldFilePath = path.join(__dirname, "..", user.profilePhoto);
+      if (user.profilePicture) {
+        const oldFilePath = path.join(__dirname, "..", user.profilePicture);
         try {
           await unlinkAsync(oldFilePath);
+          console.log("unlink done");
         } catch (err) {
           console.error("Error deleting old profile photo:", err);
         }
       }
 
-      updatedData.profilePhoto = updatedProfilePhoto;
+      updatedData.profilePicture = updatedProfilePicture;
       isUpdated = true;
     }
 

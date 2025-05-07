@@ -1,8 +1,10 @@
 const File = require("../models/fileModel");
+const logger = require("../utils/logger");
+const unlinkAsync = require("../utils/unlinkAsync");
 
 const uploadFile = async (req, res) => {
   const { fileName } = req.body;
-
+  const loggedInUser = req.user;
   try {
     const existingFile = await File.findOne({ fileName });
     if (existingFile) {
@@ -15,9 +17,14 @@ const uploadFile = async (req, res) => {
       fileName,
     });
     if (req.file) {
-      newFile.uploadedFile = req.file.path;
+      newFile.path = req.file.path;
       await newFile.save();
     }
+
+    logger(
+      "File Upload",
+      `${loggedInUser.userName} has uploaded a new file - ${fileName}`
+    );
 
     return res.status(201).json({
       success: true,
@@ -34,21 +41,29 @@ const uploadFile = async (req, res) => {
   }
 };
 
-const uploadFileOnS3 = async (req, res) => {
-  const { filename, contentType } = req.query;
-  const key = `uploads/${Date.now()}-${filename}`;
-
+const deleteFile = async (req, res) => {
+  const { id } = req.params;
+  const loggedInUser = req.user;
   try {
-    const url = await generatePresignedUrl(key, contentType);
-    await File.create({
-      filename,
-      uploadedFile: key,
+    const file = await File.findByIdAndDelete(id);
+    await unlinkAsync(file.path);
+    logger(
+      "File Upload",
+      `${loggedInUser.userName} has deleted a file - ${file.fileName}`
+    );
+    return res.status(200).json({
+      success: true,
+      message: "File deleted successfully.",
+      file,
     });
-    return res.status(201).json({ success: true, url, key });
-  } catch (err) {
-    console.error(err);
-    return res.status(500).json({ error: "Could not generate pre-signed URL" });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to delete file",
+      error: error.message,
+    });
   }
 };
 
-module.exports = { uploadFile, uploadFileOnS3 };
+module.exports = { uploadFile, deleteFile };

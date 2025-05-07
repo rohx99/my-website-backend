@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/generateToken");
+const logger = require("../utils/logger");
 
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -29,6 +30,25 @@ const userLogin = async (req, res) => {
       const userName = `${user.firstName} ${user.lastName}`;
 
       const token = generateToken(user._id, userName);
+
+      let ip;
+
+      fetch("https://api.ipify.org?format=json")
+        .then((response) => response.json())
+        .then((data) => {
+          ip = data.ip;
+        })
+        .catch((error) => {
+          console.error("Error fetching IP address:", error);
+        });
+
+      logger(
+        "User Login",
+        `${userName} has logged in successfully into console.`,
+        null,
+        null,
+        ip
+      );
       return res
         .cookie("token", token)
         .status(200)

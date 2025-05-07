@@ -2,8 +2,8 @@ const { Schema, model } = require("mongoose");
 
 const fileSchema = new Schema(
   {
-    fileName: { type: String, required: true, unique: true },
-    uploadedFile: { type: String, required: true, unique: true },
+    fileName: { type: String, required: true },
+    path: { type: String, required: true },
   },
   { timestamps: true }
 );

@@ -1,11 +1,11 @@
 const express = require("express");
-const { uploadFile } = require("../controllers/fileController");
-const uploadS3 = require("../config/multerS3");
+const { uploadFile, deleteFile } = require("../controllers/fileController");
 const upload = require("../config/multer");
+const protectedRoute = require("../middlewares/authMiddleware");
 
 const router = express.Router();
 
-router.put("/upload/s3", uploadS3.single("image"), uploadFile);
-router.post("/upload/server", upload.single("image"), uploadFile);
+router.post("/", protectedRoute, upload.single("file"), uploadFile);
+router.delete("/:id", protectedRoute, deleteFile);
 
 module.exports = router;

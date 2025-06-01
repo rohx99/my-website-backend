@@ -10,7 +10,7 @@ const getAllLogs = async (req, res) => {
         message: "No logs availabel",
       });
     }
-
+    
     return res.status(200).json({
       success: true,
       allLogs,

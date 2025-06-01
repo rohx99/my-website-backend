@@ -1,5 +1,5 @@
 const File = require("../models/fileModel");
-const logger = require("../utils/logger");
+const { logger } = require("../utils/logger");
 const unlinkAsync = require("../utils/unlinkAsync");
 
 const uploadFile = async (req, res) => {
@@ -8,6 +8,9 @@ const uploadFile = async (req, res) => {
   try {
     const existingFile = await File.findOne({ fileName });
     if (existingFile) {
+      if (req.file) {
+        unlinkAsync(req.file.path);
+      }
       return res.status(400).json({
         success: false,
         message: "File with this name already exists",
@@ -33,9 +36,31 @@ const uploadFile = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
+    if (req.file) {
+      unlinkAsync(req.file.path);
+    }
     return res.status(500).json({
       success: false,
       message: "Failed to upload the file",
+      error: error.message,
+    });
+  }
+};
+
+const getAllFiles = async (req, res) => {
+  try {
+    const files = await File.find();
+
+    return res.status(200).json({
+      success: true,
+      message: "Files fetched successfully",
+      files,
+    });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).json({
+      success: false,
+      message: "Failed to retrieve files",
       error: error.message,
     });
   }
@@ -66,4 +91,4 @@ const deleteFile = async (req, res) => {
   }
 };
 
-module.exports = { uploadFile, deleteFile };
+module.exports = { uploadFile, getAllFiles, deleteFile };

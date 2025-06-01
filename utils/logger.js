@@ -1,13 +1,12 @@
 const AuditLog = require("../models/auditLogModel");
 
-const logger = async (action, description, previousData, updatedData, ip) => {
+const logger = async (action, description, previousData, updatedData) => {
   try {
     await AuditLog.create({
       action,
       description,
       previousData,
       updatedData,
-      ip,
     });
   } catch (error) {
     console.log(error);
@@ -15,4 +14,4 @@ const logger = async (action, description, previousData, updatedData, ip) => {
   }
 };
 
-module.exports = logger;
+module.exports = { logger };

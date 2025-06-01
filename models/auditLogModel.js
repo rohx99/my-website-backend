@@ -4,8 +4,8 @@ const auditLogSchema = new Schema(
   {
     action: { type: String, required: true },
     description: { type: String, required: true },
-    previousData: { type: Array, required: false },
-    updatedData: { type: Array, required: false },
+    previousData: { type: Object, required: false },
+    updatedData: { type: Object, required: false },
   },
   { timestamps: true }
 );

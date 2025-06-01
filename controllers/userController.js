@@ -2,7 +2,7 @@ const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const unlinkAsync = require("../utils/unlinkAsync");
 const path = require("path");
-const logger = require("../utils/logger");
+const { logger } = require("../utils/logger");
 
 const createUser = async (req, res) => {
   const { firstName, middleName, lastName, email, password, gender, dob } =
@@ -111,7 +111,6 @@ const updateUser = async (req, res) => {
         const oldFilePath = path.join(__dirname, "..", user.profilePicture);
         try {
           await unlinkAsync(oldFilePath);
-          console.log("unlink done");
         } catch (err) {
           console.error("Error deleting old profile photo:", err);
         }
@@ -140,7 +139,7 @@ const updateUser = async (req, res) => {
 
     return res.status(200).json({
       success: true,
-      message: "User profile info updated successfully.",
+      message: "Profile details updated successfully.",
       user,
     });
   } catch (error) {

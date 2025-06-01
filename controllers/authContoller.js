@@ -1,7 +1,7 @@
 const User = require("../models/userModel");
 const bcrypt = require("bcryptjs");
 const generateToken = require("../utils/generateToken");
-const logger = require("../utils/logger");
+const { logger } = require("../utils/logger");
 
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
@@ -33,10 +33,7 @@ const userLogin = async (req, res) => {
 
       logger(
         "User Login",
-        `${userName} has logged in successfully into console.`,
-        null,
-        null,
-        null
+        `${userName} has logged in successfully into console.`
       );
       return res
         .cookie("token", token)

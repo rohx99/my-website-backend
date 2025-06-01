@@ -9,6 +9,7 @@ const userRoutes = require("./routes/userRoute");
 const authRoutes = require("./routes/authRoute");
 const fileRoutes = require("./routes/fileRoute");
 const logsRoutes = require("./routes/auditLogsRoute");
+const contactRoutes = require("./routes/contactRoute");
 const app = express();
 
 app.use(cors());
@@ -27,12 +28,14 @@ app.use(
 app.set("trust proxy", true);
 
 app.get("/", (req, res) => {
-  return res.send("Console Backend is running");
+  return res.redirect("https://rohitkumaryadav.com/");
 });
+
 app.use("/api", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/logs", logsRoutes);
+app.use("/api/contact", contactRoutes);
 
 const PORT = process.env.PORT;
 

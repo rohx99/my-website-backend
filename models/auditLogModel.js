@@ -6,7 +6,6 @@ const auditLogSchema = new Schema(
     description: { type: String, required: true },
     previousData: { type: Array, required: false },
     updatedData: { type: Array, required: false },
-    ip: { type: String, required: false },
   },
   { timestamps: true }
 );

@@ -10,6 +10,7 @@ const authRoutes = require("./routes/authRoute");
 const fileRoutes = require("./routes/fileRoute");
 const logsRoutes = require("./routes/auditLogsRoute");
 const contactRoutes = require("./routes/contactRoute");
+const notesRoutes = require("./routes/noteRoute");
 const app = express();
 
 app.use(cors());
@@ -36,6 +37,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/files", fileRoutes);
 app.use("/api/logs", logsRoutes);
 app.use("/api/contact", contactRoutes);
+app.use("/api/notes", notesRoutes);
 
 const PORT = process.env.PORT;
 

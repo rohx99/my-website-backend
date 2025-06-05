@@ -11,6 +11,7 @@ const fileRoutes = require("./routes/fileRoute");
 const logsRoutes = require("./routes/auditLogsRoute");
 const contactRoutes = require("./routes/contactRoute");
 const notesRoutes = require("./routes/noteRoute");
+const homepageRoutes = require("./routes/homepageRoute");
 const app = express();
 
 app.use(cors());
@@ -38,6 +39,7 @@ app.use("/api/files", fileRoutes);
 app.use("/api/logs", logsRoutes);
 app.use("/api/contact", contactRoutes);
 app.use("/api/notes", notesRoutes);
+app.use("/api/website/homepage", homepageRoutes);
 
 const PORT = process.env.PORT;
 

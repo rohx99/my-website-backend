@@ -6,6 +6,7 @@ const homepageSchema = new Schema(
     para1: { type: String, required: true },
     para2: { type: String, required: true },
     image: { type: String, required: false },
+    resume: { type: String, required: false },
   },
   { timestamps: true }
 );

@@ -21,7 +21,7 @@ const protectedRoute = async (req, res, next) => {
     console.log("JWT verification failed:", error);
     return res.status(401).json({
       success: false,
-      message: "Invalid or expired token",
+      message: "Session expired, please login again.",
       error: error.message,
     });
   }

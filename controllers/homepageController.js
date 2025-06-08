@@ -5,13 +5,14 @@ const path = require("path");
 
 const createHomepage = async (req, res) => {
   try {
-    const { title, para1, para2, image } = req.body;
+    const { title, para1, para2, image, resume } = req.body;
 
     await Homepage.create({
       title,
       para1,
       para2,
       image,
+      resume,
     });
 
     return res.status(201).json({
@@ -74,8 +75,8 @@ const updateHomepageDetails = async (req, res) => {
       isUpdated = true;
     }
 
-    if (req.file) {
-      const updatedImage = req.file.path;
+    if (req.files.image) {
+      const updatedImage = req.files.image[0].path;
       previousData.image = homepage.image;
 
       if (homepage.image) {
@@ -88,6 +89,23 @@ const updateHomepageDetails = async (req, res) => {
       }
 
       updatedData.image = updatedImage;
+      isUpdated = true;
+    }
+
+    if (req.files.resume) {
+      const updatedResume = req.files.resume[0].path;
+      previousData.resume = homepage.resume;
+
+      if (homepage.resume) {
+        const oldFilePath = path.join(__dirname, "..", homepage.resume);
+        try {
+          await unlinkAsync(oldFilePath);
+        } catch (err) {
+          console.error("Error deleting old profile photo:", err);
+        }
+      }
+
+      updatedData.resume = updatedResume;
       isUpdated = true;
     }
 
